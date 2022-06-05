@@ -1,0 +1,109 @@
+package db
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+
+	_ "github.com/lib/pq"
+)
+
+type Album struct {
+	ID     int64
+	Title  string
+	Artist string
+	Price  float32
+}
+
+type ConntDbInfo struct {
+	Host     string
+	Port     int32
+	User     string
+	Password string
+	Dbname   string
+}
+
+func init() {
+
+	db := Connet2Postgre(ConntDbInfo{
+		Host:     "localhost",
+		Port:     5432,
+		User:     "postgres",
+		Password: "postgres",
+		Dbname:   "postgres",
+	})
+	db.Query("DROP TABLE IF EXISTS albums")
+
+	db.Query(`
+	CREATE TABLE album (
+		id         SERIAL PRIMARY KEY,
+		title      VARCHAR(128) NOT NULL,
+		artist     VARCHAR(255) NOT NULL,
+		price      DECIMAL(5,2) NOT NULL
+	  )
+	`)
+
+	//albums, err := albumsByArtist("John Coltrane")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Printf("Albums found: %v\n", albums)
+	//
+	//// Hard-code ID 2 here to test the query.
+	//alb, err := albumByID(2)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Printf("Album found: %v\n", alb)
+
+}
+
+func Connet2Postgre(dbInfo ConntDbInfo) *sql.DB {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		dbInfo.Host, dbInfo.Port, dbInfo.User, dbInfo.Password, dbInfo.Dbname)
+
+	client, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//defer db.Close()
+	pingErr := client.Ping()
+	if pingErr != nil {
+		log.Fatal(pingErr)
+	}
+	return client
+}
+
+func QueryAlbumsByArtist(name string, client *sql.DB) ([]Album, error) {
+	// An albums slice to hold data from returned rows.
+	var albums []Album
+
+	rows, err := client.Query("SELECT * FROM album WHERE artist = $1", name)
+	if err != nil {
+		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
+	}
+	defer rows.Close()
+	// Loop through rows, using Scan to assign column data to struct fields.
+	for rows.Next() {
+		var alb Album
+		if err := rows.Scan(&alb.ID, &alb.Title, &alb.Artist, &alb.Price); err != nil {
+			return nil, fmt.Errorf("albumsByArtist scan %q: %v", name, err)
+		}
+		albums = append(albums, alb)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("albumsByArtist  rows error %q: %v", name, err)
+	}
+	return albums, nil
+}
+
+func InsertPostgre(alb Album, client *sql.DB) (int64, error) {
+	var id int64
+	err := client.QueryRow("INSERT INTO album (title, artist, price) VALUES ($1, $2, $3) RETURNING id", alb.Title, alb.Artist, alb.Price).Scan(&id)
+	if err != nil {
+		return 0, fmt.Errorf("addAlbum: %v", err)
+	}
+
+	return id, nil
+}
