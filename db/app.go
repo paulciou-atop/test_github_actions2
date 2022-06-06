@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"log"
+	"os"
 )
 
 type Album struct {
@@ -25,8 +26,8 @@ type ConntDbInfo struct {
 func init() {
 
 	db := Connet2Postgre(ConntDbInfo{
-		Host:     "localhost",
-		Port:     "5432",
+		Host:     os.Getenv("POSTGRES_HOST"),
+		Port:     os.Getenv("POSTGRES_PORT"),
 		User:     "postgres",
 		Password: "postgres",
 		Dbname:   "postgres",
