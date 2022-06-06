@@ -136,6 +136,6 @@ func QueryRedis(key string, client *redis.Client) string {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("query result: ", response)
+	fmt.Println("query key ", key, " and result is :", response)
 	return response
 }
