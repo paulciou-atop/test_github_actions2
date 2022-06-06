@@ -25,8 +25,7 @@ type ConntDbInfo struct {
 }
 
 func init() {
-	os.Setenv("POSTGRES_HOST", "localhost")
-	os.Setenv("POSTGRES_PORT", "5432")
+	
 	db := Connet2Postgre(ConntDbInfo{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
