@@ -25,7 +25,7 @@ type ConntDbInfo struct {
 }
 
 func init() {
-	
+
 	db := Connet2Postgre(ConntDbInfo{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
@@ -128,12 +128,14 @@ func InsertRedis(key string, value string, client *redis.Client) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("insert finished with : ", key, value)
 }
 
 func QueryRedis(key string, client *redis.Client) string {
-	response, err := client.Get("id1234").Result()
+	response, err := client.Get(key).Result()
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("query result: ", response)
 	return response
 }
