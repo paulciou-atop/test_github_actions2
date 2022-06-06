@@ -39,7 +39,7 @@ jobs:
     steps:
       # Downloads a copy of the code in your repository before running CI tests
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: test with PostgreSQL and Redis
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data
