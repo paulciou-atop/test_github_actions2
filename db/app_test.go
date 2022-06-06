@@ -3,6 +3,7 @@ package db_test
 import (
 	"fmt"
 	"learn_git_actions/db"
+	"os"
 
 	"log"
 	"testing"
@@ -10,8 +11,8 @@ import (
 
 func TestInsert_PostgreSql(t *testing.T) {
 	client := db.Connet2Postgre(db.ConntDbInfo{
-		Host:     "localhost",
-		Port:     5432,
+		Host:     os.Getenv("POSTGRES_HOST"),
+		Port:     os.Getenv("POSTGRES_PORT"),
 		User:     "postgres",
 		Password: "postgres",
 		Dbname:   "postgres",
@@ -30,8 +31,8 @@ func TestInsert_PostgreSql(t *testing.T) {
 
 func TestQueryAlbumsByArtist(t *testing.T) {
 	client := db.Connet2Postgre(db.ConntDbInfo{
-		Host:     "localhost",
-		Port:     5432,
+		Host:     os.Getenv("POSTGRES_HOST"),
+		Port:     os.Getenv("POSTGRES_PORT"),
 		User:     "postgres",
 		Password: "postgres",
 		Dbname:   "postgres",

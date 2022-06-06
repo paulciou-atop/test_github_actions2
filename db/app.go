@@ -3,9 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"log"
-
 	_ "github.com/lib/pq"
+	"log"
 )
 
 type Album struct {
@@ -17,7 +16,7 @@ type Album struct {
 
 type ConntDbInfo struct {
 	Host     string
-	Port     int32
+	Port     string
 	User     string
 	Password string
 	Dbname   string
@@ -27,7 +26,7 @@ func init() {
 
 	db := Connet2Postgre(ConntDbInfo{
 		Host:     "localhost",
-		Port:     5432,
+		Port:     "5432",
 		User:     "postgres",
 		Password: "postgres",
 		Dbname:   "postgres",
@@ -59,7 +58,7 @@ func init() {
 }
 
 func Connet2Postgre(dbInfo ConntDbInfo) *sql.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		dbInfo.Host, dbInfo.Port, dbInfo.User, dbInfo.Password, dbInfo.Dbname)
 
