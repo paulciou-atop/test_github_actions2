@@ -50,3 +50,15 @@ jobs:
           POSTGRES_HOST: postgres
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
+
+      - name: Build binary
+        run: |
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -o release/linux/amd64/helloworld
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@2.9
+        with:
+          name: lepin2001/githubactions-test
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: myDockerFile
