@@ -44,3 +44,28 @@ func TestQueryAlbumsByArtist(t *testing.T) {
 	fmt.Printf("Albums found: %v\n", albums)
 
 }
+
+//redis
+
+func TestConnectRedis(t *testing.T) {
+	_ = db.ConnectRedis(db.ConntDbInfo{
+		Host: "redis",
+		Port: "6379",
+	})
+}
+
+func TestInsertRedis(t *testing.T) {
+	client := db.ConnectRedis(db.ConntDbInfo{
+		Host: "redis",
+		Port: "6379",
+	})
+	db.InsertRedis("abc", "123", client)
+}
+
+func TestQueryRedis(t *testing.T) {
+	client := db.ConnectRedis(db.ConntDbInfo{
+		Host: "redis",
+		Port: "6379",
+	})
+	db.QueryRedis("abc", client)
+}

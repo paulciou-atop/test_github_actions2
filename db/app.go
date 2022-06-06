@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"github.com/go-redis/redis"
 	_ "github.com/lib/pq"
 	"log"
 	"os"
@@ -24,7 +25,8 @@ type ConntDbInfo struct {
 }
 
 func init() {
-
+	os.Setenv("POSTGRES_HOST", "localhost")
+	os.Setenv("POSTGRES_PORT", "5432")
 	db := Connet2Postgre(ConntDbInfo{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
@@ -106,4 +108,33 @@ func InsertPostgre(alb Album, client *sql.DB) (int64, error) {
 	}
 
 	return id, nil
+}
+
+// redis
+
+func ConnectRedis(dbInfo ConntDbInfo) *redis.Client {
+	client := redis.NewClient(&redis.Options{
+		Addr:     dbInfo.Host + ":" + dbInfo.Port,
+		Password: "",
+		DB:       0,
+	})
+	if err := client.Ping().Err(); err != nil {
+		log.Fatal(err)
+	}
+	return client
+}
+
+func InsertRedis(key string, value string, client *redis.Client) {
+	err := client.Set(key, value, 0).Err()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func QueryRedis(key string, client *redis.Client) string {
+	response, err := client.Get("id1234").Result()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return response
 }
