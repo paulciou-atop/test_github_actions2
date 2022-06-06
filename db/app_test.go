@@ -17,7 +17,7 @@ func TestInsert_PostgreSql(t *testing.T) {
 		Dbname:   "postgres",
 	})
 	albID, err := db.InsertPostgre(db.Album{
-		Title:  "116",
+		Title:  "11133",
 		Artist: "aaa",
 		Price:  49.99,
 	}, client)
