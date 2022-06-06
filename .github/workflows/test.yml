@@ -61,4 +61,4 @@ jobs:
           name: lepin2001/githubactions-test
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          #dockerfile: myDockerFile
+          dockerfile: DockerFile
