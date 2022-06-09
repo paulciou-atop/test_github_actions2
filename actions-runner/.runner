@@ -1,0 +1,9 @@
+﻿{
+  "agentId": 21,
+  "agentName": "nms-test-runner",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelines.actions.githubusercontent.com/NCiORR8rfrff9QH6LM1YuwgjQpw58yF0dXmBPt9nwtoiqbJQDk",
+  "gitHubUrl": "https://github.com/paulciou-atop/test_github_actions2",
+  "workFolder": "_work"
+}

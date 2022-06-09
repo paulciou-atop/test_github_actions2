@@ -1,10 +1,12 @@
-name: PostgreSQL Service Example
-on: [push]
+name: golang test with postgre and redis
+on: #[push]
+  workflow_dispatch:
+
 
 jobs:
 
   runner-job:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres
