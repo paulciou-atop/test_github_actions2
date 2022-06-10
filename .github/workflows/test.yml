@@ -7,8 +7,8 @@ jobs:
 
   runner-job:
     runs-on: 
-      - self-hosted
-      - wsl2-runner
+      - [self-hosted,wsl2-runner]
+      - [self-hosted,linux]
     services:
       postgres:
         image: postgres
