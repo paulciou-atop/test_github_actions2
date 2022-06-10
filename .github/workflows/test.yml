@@ -6,7 +6,9 @@ on: [push]
 jobs:
 
   runner-job:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - wsl2-runner
     services:
       postgres:
         image: postgres
