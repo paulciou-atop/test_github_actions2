@@ -1,6 +1,6 @@
 name: golang test with postgre and redis
-on: #[push]
-  workflow_dispatch:
+on: [push]
+  #workflow_dispatch:
 
 
 jobs:
